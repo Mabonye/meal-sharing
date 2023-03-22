@@ -6,6 +6,10 @@ const knex = require("./database.js");
 
 
 const mealsRouter = require("./api/meals");
+
+//week2
+const reservationsRouter = require("./api/reservations");
+
 const buildPath = path.join(__dirname, "../../dist");
 const port = process.env.PORT || 3000;
 const cors = require("cors");
@@ -22,6 +26,11 @@ app.use(express.json());
 app.use(cors());
 
 router.use("/meals", mealsRouter);
+
+
+//week2
+router.use("/reservations", reservationsRouter);
+app.use(router);
 
 
 app.get("/:type", async (req, res) => {
