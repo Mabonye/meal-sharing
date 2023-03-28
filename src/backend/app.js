@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const router = express.Router();
 const path = require("path");
+const knex = require("./database.js");
+
 
 const mealsRouter = require("./api/meals");
 const buildPath = path.join(__dirname, "../../dist");
@@ -21,6 +23,51 @@ app.use(cors());
 
 router.use("/meals", mealsRouter);
 
+
+app.get("/:type", async (req, res) => {
+  const { type } = req.params;
+  const now = new Date();
+
+  let query;
+  
+  // Routes and their responses
+  switch (type) {
+    case "future-meals":
+      query = knex.select('*').from('meal').where('when_date', '>', now);
+      break;
+    case "past-meals":
+      query = knex.select('*').from('meal').where('when_date', '<', now);
+      break;
+    case "all-meals":
+      query = knex.select('*').from('meal').orderBy('id');
+      break;
+    case "first-meal":
+      query = knex.select('*').from('meal').orderBy("id", 'asc').first();
+      break;
+    case "last-meal":
+      query = knex.select('*').from('meal').orderBy("id", 'desc').first();
+      break;
+    default:
+      return res.status(400).send("Invalid type parameter");
+  }
+
+  try {
+    const result = await query;
+    if (result.length === 0 && (type === "first-meal" || type === "last-meal")) {
+      return res.status(404).send("There are no meals");
+    }
+    res.json(result);
+
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Listening to port ${port}`);
+});
+
+
 if (process.env.API_PATH) {
   app.use(process.env.API_PATH, router);
 } else {
@@ -33,3 +80,4 @@ app.use("*", (req, res) => {
 });
 
 module.exports = app;
+
