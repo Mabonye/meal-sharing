@@ -42,7 +42,7 @@ app.get("/:type", async (req, res) => {
       query = knex.select('*').from('meal').orderBy('id');
       break;
     case "first-meal":
-      query = knex.select('*').from('meal').where("id", 1).first();
+      query = knex.select('*').from('meal').orderBy("id", 'asc').first();
       break;
     case "last-meal":
       query = knex.select('*').from('meal').orderBy("id", 'desc').first();
