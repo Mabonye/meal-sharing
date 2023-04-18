@@ -3,36 +3,108 @@ const mealsRouter = express.Router();
 const knex = require("../database");
 
 
-// GET meals using maxPrice
+// GET 
 mealsRouter.get("/", async (req, res) => {
-    const meals = knex.select('*').from('meal');
+
     const {
         maxPrice,
+        availableReservations,
         title,
         dateAfter,
-        dateBefore } = req.query;
-    /*
-    availableReservations,
-    title,
-    dateAfter,
-    dateBefore,
-    limit,
-    sortKey,
-    sortDir */
+        dateBefore,
+        limit,
+        sortKey,
+        sortDir
+    } = req.query;
 
-    if (maxPrice) {
-        meals.where("price", "<=", maxPrice);
-    } else if (title) {
-        meals.where('title', 'LIKE', `%${title}%`);
-    } else if (dateAfter) {
-        meals.where('when_date', '>', new Date(dateAfter));
-    } else if (dateBefore) {
-        meals.where('when_date', '<', new Date(dateBefore));
-    }
+    let meals;
 
     try {
-        const result = await meals;
-        res.json(result);
+        if (maxPrice) {
+            /* 
+                Returns all meals that are cheaper than maxPrice
+            */
+            if (isNaN(maxPrice)) {
+                res.send({ message: 'maxPrice must be a number' })
+            } else {
+                meals = await knex
+                    .select('*').from('meal')
+                    .where("price", "<=", maxPrice);
+            }
+            
+            /* 
+                Returns all meals that still have available spots 
+                left, if true. If false, return meals that have 
+                no available spots left
+            */
+        } else if (availableReservations === 'true' || availableReservations === 'false') {
+            const available = availableReservations === 'true';
+            meals = await knex.select('meal.*').from('meal')
+                .sum('reservation.number_of_guests as total_reservation')
+                .leftJoin('reservation', 'meal.id', 'reservation.meal_id')
+                .groupBy('meal.id')
+                .havingRaw(`COALESCE(SUM(reservation.number_of_guests), 0) ${available ? '<' : '>='} meal.max_reservations`);
+            
+            /*
+                Returns all meals that partially match the given title 
+            */    
+        } else if (title) {
+            meals = await knex
+                .select('*').from('meal')
+                .where('title', 'LIKE', `%${title}%`);
+            
+            /* 
+                Returns all meals where the date for when is after the given date
+            */
+        } else if (dateAfter) {
+            meals = await knex
+                .select('*').from('meal')
+                .where('when', '>', new Date(dateAfter));
+            
+            /* 
+                Returns all meals where the date for when is before the given date
+            */
+        } else if (dateBefore) {
+            meals = await knex
+                .select('*').from('meal')
+                .where('when', '<', new Date(dateBefore));
+            
+            /* 
+                Returns the given number of meals
+            */
+        } else if (limit) {
+            meals = await knex
+                .select('*').from('meal')
+                .limit(limit);
+            
+            /* 
+                Returns all meals sorted by the given key. Allows when, 
+                max_reservations and price as keys. Also, returns all 
+                meals sorted in the given direction (combined with the 
+                sortKey and allows asc or desc)
+            */
+        } else if (sortKey) {
+            switch (sortKey) {
+                case 'when':
+                    meals = await knex.select('*').from('meal').orderBy('when', sortDir || 'asc');
+                    break;
+                case 'max_reservations':
+                    meals = await knex.select('*').from('meal').orderBy('max_reservations', sortDir || 'asc');
+                    break;
+                case 'price':
+                    meals = await knex.select('*').from('meal').orderBy('price', sortDir || 'asc');
+                    break;
+                default:
+                    res.send({ message: 'Invalid sortKey value' });
+                    return;
+            }
+
+        } else {
+            res.status(400).send({ message: 'Bad request' })
+        }
+
+        const mealList = await meals;
+        res.json(mealList);
     } catch (error) {
         throw error;
     }
@@ -128,12 +200,31 @@ mealsRouter.delete("/:id", async (req, res) => {
     }
 });
 
+
+// Returns all reviews for a specific meal
+mealsRouter.get("/:meal_id/reviews", async (request, response) => {
+    const mealId = Number(request.params.meal_id);
+
+    try {
+        const reviews = await (knex.select('*')
+            .from('review')
+            .where('meal_id', mealId));
+
+        if (reviews.length === 0) {
+            response.status(404).send(`Meal with Id ${mealId} does not have review`);
+        } else {
+            response.json(reviews);
+        }
+
+    } catch (err) {
+        response.status(500).json({ 
+            message: "Internal Server Error" 
+        });
+    }
+});
+
+
+
 module.exports = mealsRouter;
 
 
-
-/*else if (availableReservations) {
-        meals.leftJoin('reservation', 'meal.id', '=', 'reservation.meal_id')
-            .groupBy('meal.id')
-            .having(knex.raw('SUM(reservation.number_of_guests) < meal.max_reservations'));
-    } */

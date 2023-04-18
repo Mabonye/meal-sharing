@@ -10,6 +10,9 @@ const mealsRouter = require("./api/meals");
 //week2
 const reservationsRouter = require("./api/reservations");
 
+//week3
+const reviewsRouter = require("./api/reviews");
+
 const buildPath = path.join(__dirname, "../../dist");
 const port = process.env.PORT || 3000;
 const cors = require("cors");
@@ -30,6 +33,10 @@ router.use("/meals", mealsRouter);
 
 //week2
 router.use("/reservations", reservationsRouter);
+
+//week3
+router.use("/reviews", reviewsRouter);
+
 app.use(router);
 
 
