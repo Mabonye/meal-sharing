@@ -2,7 +2,6 @@ const express = require("express");
 const mealsRouter = express.Router();
 const knex = require("../database");
 
-
 // GET 
 mealsRouter.get("/", async (req, res) => {
 
@@ -217,8 +216,8 @@ mealsRouter.get("/:meal_id/reviews", async (request, response) => {
         }
 
     } catch (err) {
-        response.status(500).json({ 
-            message: "Internal Server Error" 
+        response.status(500).json({
+            message: "Internal Server Error"
         });
     }
 });
