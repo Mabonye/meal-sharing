@@ -35,7 +35,7 @@ mealsRouter.get("/", async (req, res) => {
                 Returns all meals that still have available spots 
                 left, if true. If false, return meals that have 
                 no available spots left
-            */
+            */  
         } else if (availableReservations === 'true' || availableReservations === 'false') {
             const available = availableReservations === 'true';
             meals = await knex.select('meal.*').from('meal')
