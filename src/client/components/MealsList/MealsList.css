@@ -8,15 +8,12 @@ h1 {
     margin-bottom: 2rem;
 }
 
-/* Style meal item container */
+/* Style meal item container*/ 
 .meal {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    padding: 1rem;
-    border-radius: 5px;
+    margin: 0 1rem;
+    border-bottom: 1px solid #ccc;
 }
 
 /* Style meal-title */
@@ -30,6 +27,8 @@ h1 {
     font-size: 1rem;
     color: #666;
     margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 /* Style meal-price */

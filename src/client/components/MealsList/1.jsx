@@ -14,24 +14,21 @@ function MealsList() {
     return (
         <div>
             <h1>Our Menu</h1>
-            <ul>
+            <div>
                 {meals.map(meal => {
                     return (
-                        <li key={meal.id} className='meal'>
-                            <h2>{meal.title}</h2>
-                            <p>
-                                <span>
-                                    {meal.description}
-                                </span>
-                                <span className='meal-price'>
-                                    ${meal.price}
-                                </span>
-                            </p>
-                        </li>
-
+                        <div key={meal.id} className='meal'>
+                            <div className='meal-description'>
+                                <h2>{meal.title}</h2>
+                                <p>{meal.description}</p>
+                            </div>
+                            <div className='meal-price'>
+                                ${meal.price}
+                            </div>
+                        </div>
                     )
                 })}
-            </ul>
+            </div>
         </div>
     );
 }
