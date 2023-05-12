@@ -8,7 +8,7 @@ function App() {
             <Route exact path="/">
                 <MealsList />
             </Route>
-        </Router>
+        </Router>   
     );
 }
 
