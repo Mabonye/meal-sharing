@@ -10,7 +10,7 @@ function MealsList() {
             .then(response => response.json())
             .then(data => setMeals(data))
             .catch(error => console.error(error));
-    }, [meals]);
+    }, []);
 
     return (
         <div>
