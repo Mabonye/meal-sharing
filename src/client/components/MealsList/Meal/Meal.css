@@ -1,0 +1,29 @@
+/* Style meal item container */
+.meal {
+    align-items: center;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+/* Style meal-title */
+.meal h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Style meal-description */
+.meal p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+/* Style meal-price */
+.meal-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
