@@ -2,16 +2,17 @@
 .meal {
     align-items: center;
     margin-bottom: 1rem;
-    margin-right: 1rem;
     border: 1px solid #ccc;
     padding: 1rem;
     border-radius: 5px;
 }
 
 /* Style meal-title */
-.meal h2 {
+.meal h4 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
+    font-weight: 400;
+    letter-spacing: 2px;
 }
 
 /* Style meal-description */
@@ -19,6 +20,8 @@
     font-size: 1rem;
     color: #666;
     margin-bottom: 0.5rem;
+    letter-spacing: 0.06em;
+    font-size: 17px;
 }
 
 /* Style meal-price */

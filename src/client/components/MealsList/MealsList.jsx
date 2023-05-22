@@ -1,32 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
 import "./MealsList.css";
 import Meal from './Meal/Meal';
+import UseFetchData from '../UseFetchData/UseFetchData';
 
 function MealsList() {
-    const [meals, setMeals] = useState([]);
+    const { data: meals, isLoading } = UseFetchData('http://localhost:3005/all-meals');
+    const [expanded, setExpanded] = useState(false);
+    const displayMeals = expanded ? meals : meals.slice(0, (meals.length / 2));
 
-    useEffect(() => {
-        fetch('http://localhost:3005/all-meals')
-            .then(response => response.json())
-            .then(data => setMeals(data))
-            .catch(error => console.error(error));
-    }, []);
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     return (
-        <div>
-            <h1>Our Menu</h1>
+        <div className='mealList'>
+
             <div className='meals-container'>
-                {meals.map(meal => {
+                {displayMeals.map(meal => {
                     return <Meal
                         key={meal.id}
                         title={meal.title}
-                        description={meal.description}
+                        location={meal.location}
                         price={meal.price}
                     />
                 })}
             </div>
+
+            {meals.length > displayMeals.length && (
+                <Link to="/meals" className="display-button">
+                    {expanded ? 'Show Less' : 'Show More'}
+                </Link>
+            )}
         </div>
     );
 }
 
 export default MealsList;
+

@@ -1,9 +1,10 @@
-body {
-    background-color: rgb(253, 237, 217);
+.mealList {
+    width: 80%;
+    margin: 0 auto;
 }
 
 h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
     text-align: center;
     margin-bottom: 2rem;
 }
@@ -11,4 +12,14 @@ h1 {
 .meals-container {
     display: grid;
     grid-template-columns: auto auto;
+    grid-column-gap: 40px;
+}
+
+.display-button {
+    height: 3rem;
+    padding: 8px 12px;
+    width: 60%;
+    border-radius: 25px;
+    letter-spacing: 0.1em;
+    font-size: 18px;
 }

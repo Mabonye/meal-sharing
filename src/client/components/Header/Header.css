@@ -1,0 +1,33 @@
+.header-container {
+    position: sticky;
+    width: 100%;
+    z-index: 1;
+    top: 0;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    color: rgb(0, 0, 0);
+    letter-spacing: 4px;
+    font-size: 15px;
+    padding: 8px 16px!important;
+}
+
+#header nav ul {
+    display: flex;
+    list-style: none;
+    text-transform: capitalize;
+}
+
+#header nav li {
+    margin-left: 10px;  
+}
+
+#header h1 {
+    font-size: 15px;
+    font-weight: lighter;
+}

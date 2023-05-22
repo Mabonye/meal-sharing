@@ -6,11 +6,9 @@ function Meal(props) {
     return (
         <div key={props.id} className='meal'>
             <div className='meal-description'>
-                <h2>{props.title}</h2>
-                <p>{props.description}</p>
-            </div>
-            <div className='meal-price'>
-                ${props.price}
+                <h4>{props.title}</h4>
+                <p>Location: {props.location}</p>
+                <p>Price: ${props.price}</p>
             </div>
         </div>
     )

@@ -3,13 +3,11 @@
 @import 'theme.css';
 
 * {
-  font-family: Sen, sans-serif;
+  font-family: "Times New Roman", Georgia, Serif;
   box-sizing: border-box;
 }
 
 #root {
-  padding-left: 30%;
-  padding-right: 30%;
   height: 100vh;
 }
 
@@ -39,16 +37,23 @@ button {
   font-size: 17px;
 }
 
-@media screen and (max-width: 1400px) {
+/*@media screen and (max-width: 1400px) {
   #root {
     padding-left: 20%;
     padding-right: 20%;
   }
-}
+}*/
 
 @media screen and (max-width: 750px) {
   #root {
     padding-left: 0;
     padding-right: 0;
   }
+}
+
+h1 {
+  font-size: 40px;
+  font-family: "Playfair Display";
+  letter-spacing: 5px;
+  font-weight: 400;
 }
