@@ -4,6 +4,7 @@ import moment from 'moment/moment';
 import "./MealDetails.css";
 import UseFetchData from '../../../UseFetchData/UseFetchData';
 import Modal from 'react-modal';
+import { imageArray } from '../../../../App';
 
 function MealDetails() {
     const { id } = useParams();
@@ -17,9 +18,6 @@ function MealDetails() {
         created_date: "",
         meal_id: id 
     });
-
-    console.log(meals.id)
-    console.log(formData)
 
     const handleInputChange = (event) => {
         setFormData({ ...formData, [event.target.id]: event.target.value });
@@ -51,9 +49,6 @@ function MealDetails() {
                 console.error('Error submitting a form', error);
             });
     }
-
-
-    console.log(meals)
     
     const showSuccessAlert = () => {
         window.alert('The Reservation has been made!');
@@ -63,11 +58,15 @@ function MealDetails() {
         return <div>Loading...</div>;
     }
 
+    const mealImage = imageArray.find(mealData => mealData.mealId === meals.id);
+
     return (
         <>
             <div className='meal-details'>
                 {meals !== null ? (
+                    
                     <div>
+                        <img src={mealImage.mealUrl} alt={meals.title} />
                         <h2>Title: {meals.title}</h2>
                         <p>ID: {meals.id}</p>
                         <p>Location: {meals.location}</p>
