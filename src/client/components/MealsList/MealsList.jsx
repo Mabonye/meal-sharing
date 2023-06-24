@@ -1,30 +1,38 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react';
+import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
 import "./MealsList.css";
 import Meal from './Meal/Meal';
+import { imageArray } from '../../App';
 
-function MealsList() {
-    const [meals, setMeals] = useState([]);
-
-    useEffect(() => {
-        fetch('http://localhost:3005/all-meals')
-            .then(response => response.json())
-            .then(data => setMeals(data))
-            .catch(error => console.error(error));
-    }, []);
+function MealsList(props) {
+    const { meals } = props;
+    const [expanded, setExpanded] = useState(false);
+    const displayMeals = expanded ? meals : meals.slice(0, (meals.length / 2));
 
     return (
-        <div>
-            <h1>Our Menu</h1>
+        <div className='mealList'>
+
             <div className='meals-container'>
-                {meals.map(meal => {
+                {displayMeals.map(meal => {
+                   const mealImage = imageArray.find(mealData => mealData.mealId === meal.id);
+                   
+
                     return <Meal
                         key={meal.id}
                         title={meal.title}
-                        description={meal.description}
+                        location={meal.location}
                         price={meal.price}
+                        imageURL={mealImage.mealUrl}
                     />
                 })}
             </div>
+
+            {meals.length > displayMeals.length && (
+                <Link to="/meals" className="display-button">
+                    {expanded ? 'Show Less' : 'Show More'}
+                </Link>
+            )}
         </div>
     );
 }
